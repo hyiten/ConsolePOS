@@ -11,10 +11,11 @@ function MenuSelection() {
     console.log(`${i} - ${menuitems[i].name}`);
   }
 
-  rl.question('What would you like to order ?', (category) => {
-      if (!isNaN(category)) {
+  rl.question(`What would you like to order [${menuitems.length}]?`, (category) => {
+      if (parseInt(category) < menuitems.length) {
           ItemSelection(category)
       } else {
+          console.log('please enter only 0 -', menuitems.length-1);
           MenuSelection()
       }
   })
@@ -27,10 +28,10 @@ function ItemSelection(category) {
   }
 
   rl.question(`Which ${menuitems[category].name} would you like to order ?`, (item) => {
-      if (!isNaN(item)) {
+      if (parseInt(item) < menuitems[parseInt(category)].items.length) {
         OptionSelection(category,item)
       } else {
-        ItemSelection()
+        ItemSelection(category)
       }
   })
 }
@@ -44,12 +45,12 @@ function OptionSelection(category,item) {
   }
 
   rl.question('What is your selection>', (answer) => {
-      if (!isNaN(answer)) {
+      if (parseInt(answer) < menuitems[category].items[item].options.length) {
           console.log('You typed: ', answer)
           //send it to the ShoppingCart
           rl.close()
       } else {
-        OptionSelection()
+        OptionSelection(category,item)
       }
   })
 }
