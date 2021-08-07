@@ -1,4 +1,5 @@
 const { menuitems } = require("./offerings");
+const currentTime = require("./timestampFnc.js")
 const readline = require("readline");
 var orderPrice = 0;
 var currentOrder = []
@@ -57,7 +58,7 @@ function OptionSelection(category,item) {
           rl.question('Is that all (Y/N)?', (answer) => {
             if (answer == 'y') {
               for (listOrder = 0; listOrder < currentOrder.length; listOrder++) {
-                console.log('---->', currentOrder[listOrder]);
+                console.log(`${currentTime.convert(currentTime.get())} --> ${currentOrder[listOrder]}`)
               }
               console.log('Your order is complete. [done]')
               rl.close();
