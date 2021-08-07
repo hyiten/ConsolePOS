@@ -15,16 +15,17 @@ const rl = readline.createInterface({
 
 function MenuSelection() {
   for (i = 0; i < menuitems.length; i++) {
-    console.log(`${i} - ${menuitems[i].name}`);
+    console.log(`${i+1} - ${menuitems[i].name}`);
   }
 
   rl.question(
     `What would you like to order [${menuitems.length}]?`,
     (category) => {
-      if (parseInt(category) < menuitems.length) {
-        ItemSelection(category);
+      real_category = parseInt(category) - 1;
+      if (parseInt(real_category) < menuitems.length) {
+        ItemSelection(real_category);
       } else {
-        console.log("please enter only 0 -", menuitems.length - 1);
+        console.log("please enter only 1 -", menuitems.length);
         MenuSelection();
       }
     }
@@ -34,7 +35,7 @@ function MenuSelection() {
 function ItemSelection(category) {
   for (j = 0; j < menuitems[parseInt(category)].items.length; j++) {
     console.log(
-      `${j} - ${menuitems[parseInt(category)].items[j].name} / ${
+      `${j+1} - ${menuitems[parseInt(category)].items[j].name} / ${
         menuitems[parseInt(category)].items[j].price
       }`
     );
@@ -43,9 +44,10 @@ function ItemSelection(category) {
   rl.question(
     `Which ${menuitems[category].name} would you like to order ?`,
     (item) => {
-      if (parseInt(item) < menuitems[parseInt(category)].items.length) {
-        orderPrice = menuitems[parseInt(category)].items[parseInt(item)].price;
-        OptionSelection(category, item);
+      real_item = parseInt(item) - 1;
+      if (parseInt(real_item) < menuitems[parseInt(category)].items.length) {
+        orderPrice = menuitems[parseInt(category)].items[parseInt(real_item)].price;
+        OptionSelection(category, real_item);
       } else {
         ItemSelection(category);
       }
@@ -56,20 +58,21 @@ function ItemSelection(category) {
 function OptionSelection(category, item) {
   for (k = 0; k < menuitems[category].items[item].options.length; k++) {
     console.log(
-      `${k} - ${menuitems[category].items[item].options[k].name} / ${menuitems[category].items[item].options[k].addprice}`
+      `${k+1} - ${menuitems[category].items[item].options[k].name} / ${menuitems[category].items[item].options[k].addprice}`
     );
   }
 
   rl.question("What is your selection>", (answer) => {
-    if (parseInt(answer) < menuitems[category].items[item].options.length) {
+    real_answer = parseInt(answer) - 1;
+    if (parseInt(real_answer) < menuitems[category].items[item].options.length) {
       orderPrice =
         orderPrice +
-        menuitems[category].items[item].options[parseInt(answer)].addprice;
+        menuitems[category].items[item].options[parseInt(real_answer)].addprice;
       console.log(
         "You have ordered ",
         menuitems[parseInt(category)].items[parseInt(item)].name,
         "/",
-        menuitems[category].items[item].options[parseInt(answer)].name,
+        menuitems[category].items[item].options[parseInt(real_answer)].name,
         "/ cost ",
         orderPrice
       );
@@ -78,13 +81,13 @@ function OptionSelection(category, item) {
         `${menuitems[parseInt(category)].name},${
           menuitems[parseInt(category)].items[parseInt(item)].name
         },${
-          menuitems[category].items[item].options[parseInt(answer)].name
+          menuitems[category].items[item].options[parseInt(real_answer)].name
         },${orderPrice}`
       );
 
       details = `${menuitems[parseInt(category)].name}/${
         menuitems[parseInt(category)].items[parseInt(item)].name
-      }/${menuitems[category].items[item].options[parseInt(answer)].name}`;
+      }/${menuitems[category].items[item].options[parseInt(real_answer)].name}`;
       price = orderPrice;
 
       //write order into sqlite database
