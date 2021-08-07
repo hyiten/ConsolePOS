@@ -2,12 +2,21 @@ const sqlite3 = require("sqlite3");
 const db = new sqlite3.Database("./consolepos.db");
 const queries = [];
 
-function get(id,callback) {
-  db.each("SELECT * FROM Orders WHERE TransactionID = ?", [id], function(err, row) {
-      queries.push(row);
-  }, function() {
+function get(id, callback) {
+  db.each(
+    "SELECT * FROM Orders WHERE TransactionID = ?",
+    [id],
+    (err, row) => {
+      if (err) {
+        callback([]);
+      } else {
+        queries.push(row);
+      }
+    },
+    () => {
       callback(queries);
-  });
+    }
+  );
 }
 
 function add(trxid, details, qty, price, ordertime) {
