@@ -118,7 +118,7 @@ function OptionSelection(category, item) {
 
 MenuSelection();
 
-rl.on("close", function () {
+rl.on("close",  () => {
   //show receipt
   console.log("\nBYE BYE !!!");
   process.exit(0);
