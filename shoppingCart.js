@@ -21,7 +21,7 @@ function get(id, callback) {
 
 function getTrxID(callback) {
   db.each(
-    "SELECT DISTINCT TransactionID FROM Orders",
+    "SELECT TransactionID,OrderTime FROM Orders GROUP BY TransactionID",
     (err, row) => {
       if (err) {
         callback([]);
