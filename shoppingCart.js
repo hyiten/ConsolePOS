@@ -19,6 +19,22 @@ function get(id, callback) {
   );
 }
 
+function getTrxID(callback) {
+  db.each(
+    "SELECT DISTINCT TransactionID FROM Orders",
+    (err, row) => {
+      if (err) {
+        callback([]);
+      } else {
+        queries.push(row);
+      }
+    },
+    () => {
+      callback(queries);
+    }
+  );
+}
+
 function add(trxid, details, qty, price, ordertime) {
   db.run(
     `INSERT into Orders(TransactionID,Details,Qty,Price,OrderTime) VALUES (?,?,?,?,?)`,
@@ -48,4 +64,4 @@ function del(id) {
   });
 }
 
-module.exports = { get, add, del };
+module.exports = { get, getTrxID, add, del };
